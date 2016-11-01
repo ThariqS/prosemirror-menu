@@ -4,6 +4,7 @@ const {EditorView} = require("prosemirror-view")
 const {renderGrouped} = require("./menu")
 
 const prefix = "ProseMirror-menubar"
+const floatingPrefix = "ProseMirror-menubar ProseMirror-menubar-floating"
 
 // ::- A wrapper around
 // [`EditorView`](http://prosemirror.net/ref.html#view.EditorView)
@@ -109,10 +110,12 @@ class MenuBarEditorView {
         this.menu.style.display = ""
         this.spacer.parentNode.removeChild(this.spacer)
         this.spacer = null
+        this.menu.className = floatingPrefix
       } else {
         let border = (parent.offsetWidth - parent.clientWidth) / 2
         this.menu.style.left = (editorRect.left + border) + "px"
         this.menu.style.display = (editorRect.top > window.innerHeight ? "none" : "")
+        this.menu.className = prefix
       }
     } else {
       if (editorRect.top < 0 && editorRect.bottom >= this.menu.offsetHeight + 10) {
@@ -121,6 +124,7 @@ class MenuBarEditorView {
         this.menu.style.left = menuRect.left + "px"
         this.menu.style.width = menuRect.width + "px"
         this.menu.style.position = "fixed"
+        this.menu.className = floatingPrefix
         this.spacer = crel("div", {class: prefix + "-spacer", style: `height: ${menuRect.height}px`})
         parent.insertBefore(this.spacer, this.menu)
       }
